@@ -1,0 +1,42 @@
+$sky-color: rgba(104, 178, 192, 1);
+$sky-color2: rgba(105, 193, 179, 1);
+$cloud-color: rgba(236, 226, 177, 1);
+$border-color: rgba(119, 61, 6, 1);
+$bluee: #0091ff;
+$background-hover: #005ea8;
+$desert-color: rgba(239, 198, 128, 1);
+$shadow-nav: rgba(0, 0, 255, .2);
+$light-red: #ff4c5a;
+
+.wrapperHeader{
+    margin: auto;
+    max-width: 1280px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    top:50px;
+    margin-bottom: 100px;
+}
+
+.header{
+    text-align: center;
+    font-size: larger;
+    font-weight: 400;
+    color: $sky-color;
+    margin-bottom: 12px;
+}
+
+.paragraph{
+    margin: auto;
+    text-align: center;
+    font-size: medium;
+    position: relative;
+}
+@media only screen and (min-width: 968px) {
+    .header {
+        font-size: 36px;
+    }
+    .paragraph {
+        font-size: x-large;
+    }
+}

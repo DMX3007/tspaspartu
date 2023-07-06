@@ -1,0 +1,242 @@
+$sky-color: rgba(104, 178, 192, 1);
+$sky-color2: rgba(105, 193, 179, 1);
+$cloud-color: rgba(236, 226, 177, 1);
+$border-color: rgba(119, 61, 6, 1);
+$bluee: #0091ff;
+$background-hover: #005ea8;
+$desert-color: rgba(239, 198, 128, 1);
+$shadow-nav: rgba(0, 0, 255, .2);
+$light-red: #ff4c5a;
+$mobile-menu: rgba(125, 159, 175, 0.35);
+
+.navigation {
+    background-color: $mobile-menu;
+    min-height: 150px;
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.burgerMenu {
+    position: relative;
+    top: 20px;
+    right: -10px;
+    cursor: pointer;
+  }
+  
+    .burgerStickTop{
+      position: relative;
+      top: 0px;
+      height: 3px;
+      width: 32px;
+      border-radius: 100px;
+      background-color: $border-color;
+      transition: all 0.3s ease;
+    }
+    .burgerStickTopRotated{
+      position: relative;
+      top: 5px;
+      height: 3px;
+      width: 32px;
+      border-radius: 100px;
+      background-color: $border-color;
+      transition: all 0.3s ease;
+        transform: rotate(45deg);
+    }
+    .burgerStickMiddle{
+      position: relative;
+      top: 2px;
+      height: 3px;
+      width: 32px;
+      border-radius: 100px;
+      background-color: $border-color;
+      transition: all 0.3s ease;
+    }
+    .burgerStickMiddleHidden {
+        position: relative;
+        top: 2px;
+        height: 3px;
+        width: 32px;
+        border-radius: 100px;
+        background-color: $border-color;
+        transition: all 0.3s ease;
+        display: none;
+    }
+    .burgerStickBottom{
+      position: relative;
+      top: 4px;
+      height: 3px;
+      width: 32px;
+      border-radius: 100px;
+      background-color: $border-color;
+      transition: all 0.3s ease;
+    }
+    .burgerStickBottomRotated{
+        position: relative;
+        top: 2px;
+        height: 3px;
+        width: 32px;
+        border-radius: 100px;
+        background-color: $border-color;
+        transition: all 0.3s ease;
+        transform: rotate((-45deg));
+      }
+  .mobileMenu{
+    z-index: 10000;
+    position: absolute;
+    top:132px;
+    background: linear-gradient(180deg,  rgba(255,255,255,0.25) 0%,rgba(255,255,255,0.25) 30%,rgba(125,159,175,0.25) 40%,rgba(125,159,175,0.35) 100%);
+    cursor: pointer;
+    display: flex;
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    align-items: stretch;
+}
+  .mobileMenuHidden {
+    position: absolute;
+    top:132px;
+    background-color: rgba(255, 255, 255, 0.75);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    display: none;
+}
+.mobileItem:first-child{
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px 0 0 10px;
+}
+.mobileItem{
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+    align-items: stretch;
+}
+.mobileItem:last-child{
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+    align-items: stretch;
+    border-radius: 0 10px 10px 0;
+}
+
+.mobileItem:hover {
+    background-color: $desert-color;
+    transition: all 0.3s ease;
+}
+
+   .navigationLogo{
+    display: flex;
+    position: relative;
+    align-items: center;
+    }
+
+    .logo {
+        margin-top: 40px;
+    }
+    .logoTitle{
+        margin-top: 49px;
+        color: $sky-color;
+        font-size: x-large;
+    }
+    
+    .navMenu {
+        position: relative;
+        top: 25px;
+        right:50px;
+        width: 0px;
+        display: none;
+        gap: 32px;
+        .navMenuItem {
+            align-self: center;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 10px;
+            transition: all 0.3s ease-out;
+        }
+    }
+    
+    .navMenuItem:hover {
+        transition: all 0.2s ease-out;
+        background-color: $desert-color;
+        box-shadow: 0px 2px 4px $shadow-nav;
+        // font-size: 17px;
+    }
+
+    @media only screen and (min-width: 968px) {
+        .navigation {
+            .navigationLogo {
+                margin-left: 6%;
+                align-items: center;    
+                justify-content: center;
+            }
+            .logo {
+                display: none;
+            }
+        }
+        .navMenu {
+            width: auto;
+            display: flex;
+            max-width: 1280px;
+            gap: 0px;
+        }
+        .burger {
+            display: none;
+        }
+        .mobileMenu {
+            display: none;
+        }
+    }
+
+    @media only screen and (min-width: 1180px) {
+        .navigation {
+            .navigationLogo {
+                margin-left: 6%;
+                align-items: center;
+                justify-content: center;
+            }
+            .logo {
+                display: block;
+            }
+        }
+        .navMenu {
+            width: auto;
+            display: flex;
+            max-width: 1280px;
+            gap: 22px;
+        }
+        .burger {
+            display: none;
+        }
+        .mobileMenu {
+            display: none;
+        }
+    }
+    @media only screen and (min-width: 1196px) {
+        .navigation {
+            .navigationLogo {
+                margin-left: 6%;
+                align-items: center;
+                justify-content: center;
+            }
+            .logo {
+                display: block;
+            }
+        }
+        .navMenu {
+            width: auto;
+            display: flex;
+            max-width: 1280px;
+            gap: 32px;
+        }
+        .burger {
+            display: none;
+        }
+        .mobileMenu {
+            display: none;
+        }
+    }

@@ -1,0 +1,29 @@
+$sky-color: rgba(104, 178, 192, 1);
+$sky-color2: rgba(105, 193, 179, 1);
+$cloud-color: rgba(236, 226, 177, 1);
+$border-color: rgba(119, 61, 6, 1);
+$bluee: #0091ff;
+$background-hover: #005ea8;
+$desert-color: rgba(239, 198, 128, 1);
+$shadow-nav: rgba(0, 0, 255, .2);
+$light-red: #ff4c5a;
+$mobile-menu: rgba(125, 159, 175, 0.35);
+.wrapper {
+    height: auto;
+    cursor: pointer;
+    padding: 5%;
+    box-shadow: 2px 2px 1px $shadow-nav, -1px -1px 1px $shadow-nav;
+    background-color: $bluee;
+    border-radius: 10px;
+    border: 1px solid $sky-color;
+}
+
+.wrapperIcon {
+    align-self: center;
+    position: relative;
+}
+
+.wrapperIcon__icon {
+    width: 18px;
+    color:$cloud-color
+}

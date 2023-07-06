@@ -1,0 +1,53 @@
+.contactUs{
+    position: relative;
+    margin-right: 12px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 75, 75, 1);
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease-out;
+}
+
+.contactUs:hover{
+    background-color: rgb(255, 48, 48);
+}
+.contactUs:active{
+    background-color: red;
+}
+
+.searchingBar {
+    // min-height: 68px;
+    min-width: 250px;
+    order: 1;
+    align-self: center;
+    cursor: pointer;
+    padding: 10px 20px 10px 20px;
+    border-radius: 10px;
+    // box-shadow: -2px 2px 4px 0px $shadow-nav;
+    background-color: rgba(255, 75, 75, 1);
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease-out;
+}
+
+.searchingBar:hover{
+    background-color: rgb(255, 48, 48);
+}
+.searchingBar:active{
+    background-color: red;
+}
+
+.animationLuggage{
+    width: 100px;
+    height: 50px;
+}
