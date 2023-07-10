@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { GiAirplaneArrival, GiAirplaneDeparture, GiCalendar } from 'react-icons/gi'
+import { GiCalendar } from 'react-icons/gi'
 
 import { Button } from "../Button/Button";
 import { InputField } from "./InputField/InputField";
@@ -7,101 +7,113 @@ import { Icon } from './Icon/Icon';
 import { Container } from "./Container/Container";
 import styles from "./SearchBar.module.scss";
 import { useQuery } from "@tanstack/react-query";
+import { DropdownCombobox } from "./DropdownCombobox/DropdownCombobox";
 
-export const SearchBar = ({ countries, font }) => {
-    const [clicked, setClicked] = useState(true);
-    const [location, setLocation] = useState("Красноярск");
-    const [destination, setDestination] = useState("Тайланд");
+interface SearchBarProps {
+    font: string;
+}
 
-    const handleSetDate = (e) => {
-        setDate(e.target.value);
-    };
+interface SelectedItemProps {
+    handleSelectedItemChange: React.Dispatch<React.SetStateAction<string>>
+}
 
-    const handleSetInput = useCallback((e) => {
-        if (setDestination) {
-            setDestination(e.target.value);
-        }
-    }, []);
+interface SortLocationProps {
+    listForSort: string[];
 
-    const handleClick = () => {
-        setClicked(!clicked);
-    };
+}
+type NumberStringMap = { [x: string]: number };
+interface MapFactory {
+    (citiesList: number[], countryList: string[]): { [x: string]: number }[];
+}
 
-    const handleInput = (event, cb) => {
-        cb(event.target.value);
-    };
+const createMap: MapFactory = (citiesList, countryList): NumberStringMap[] => {
+    return countryList.map((key, index) => ({
+        [key]: citiesList[index]
+    }));
+}
 
-    const getCoutries = async () => {
-        const countries = await fetch('/api//countries')
-        const data = await countries.json()
-        return data;
+
+export const SearchBar = ({ font }: SearchBarProps): JSX.Element => {
+
+    const [selectedCity, setSelectedCity] = useState<string>('')
+    const [selectedCountry, setSelectedCountry] = useState<string>('')
+
+    if (selectedCity) {
+        const arrCountry = createMap(depCities, countryList)
     }
 
-    const { loading, data: country, error } = useQuery(['countries'], getCoutries);
-    // console.log(data)
-    // if (data) {
-    //     return <div>{data.map(val => {
-    //         <div>{val}</div>
-    //     })}</div>
-    // }
+    const getDestinations = async () => {
+        const countryes = await fetch('/api//countries')
+        const data = await countryes.json()
+        return data;
+    }
+    const { data: destinations } = useQuery(['countries'], getDestinations);
+
+
+    const getResorts = async () => {
+        const data = await fetch('/api//resorts');
+        const arr: Array<{}> = await data.json();
+        const result = [];
+        for (let i = 0; i < arr.length; i++) {
+            result.push(arr[i].title_ru);
+        }
+        return result;
+    }
+    const { data: resorts } = useQuery(['resorts'], getResorts);
+    // console.log(cities)
+
+    const getCitiesAndCountryes = async () => {
+        const data = await fetch('/api//fromto');
+        const arr = await data.json();
+        // console.log(arr)
+        return arr;
+    }
+
+    const { data: list } = useQuery(['item'], getCitiesAndCountryes);
+
+
+    // console.log(list)
+
+
+    // console.log(list.flt2from);
+    console.log(list?.flt)
+    // console.log(list.flt2)
+    const countryList = list?.flt.map((e) => e[1].n);
+    console.log(countryList)
+
+
+    const depCities = list?.flt2.map((e) => e[1].n);
+    // let depCities = ['Moscow']
+    // console.log(depCities)
+
+
+
+    const [resort, setResort] = useState(resorts)
+
+    const [clicked, setClicked] = useState(true);
+
 
     return (
-        <form className={styles.searchBar + ` ${font}`}>
-            <Button innerText="поиск тура" appliedStyle="" />
+        <form className={styles.searchBar}>
+            {(selectedCity || selectedCountry) && <>
+                <DropdownCombobox initialState={depCities} label={"Откуда"} onChange={(value: string) => setSelectedItem(value)} />
+                <DropdownCombobox initialState={destinations} label={"Куда"} onChange={(value: string) => setSelectedItem(value)} />
+            </>}
+
+            {(depCities && destinations) && <>
+                <DropdownCombobox initialState={depCities} label={"Откуда"} onChange={(value: string) => setSelectedItem(value)} />
+                <DropdownCombobox initialState={destinations} label={"Куда"} onChange={(value: string) => setSelectedItem(value)} />
+            </>
+            }
             <div className={styles.searchItem}>
                 <div className={styles.searchItemContainer}>
-                    <Icon clickHandler={handleClick}>
-                        <GiAirplaneDeparture />
-                    </Icon>
-                    <div className={styles.searchItemContent}>
-                        <div className={styles.searchItemDesc}>Откуда</div>
-                        <input
-                            className={styles.searchItemValue}
-                            font={font}
-                            value={location}
-                            onChange={(e) => {
-                                setLocation(e.target.value);
-                            }}
-                        />
-                    </div>
-                </div>
-            </div>
-            <div className={styles.searchItem}>
-                <div className={styles.searchItemContainer}>
-                    <Icon clickHandler={handleClick}>
-                        <GiAirplaneArrival />
-                    </Icon>
-                    <InputField
-                        font={font}
-                        description={"Куда"}
-                        inputValue={destination}
-                    // onChange={(e) => handleInput(e, setDestination)}
-                    />
-                </div>
-                <ul
-                    className={clicked ? styles.dropDown : styles.dropDownVisible}
-                    onClick={handleClick}
-                >
-                    {country?.map((c, id) => (
-                        <li
-                            className={
-                                clicked ? styles.dropDownItem : styles.dropDownItemVisible
-                            }
-                            key={id}
-                        >
-                            {c}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div className={styles.searchItem}>
-                <div className={styles.searchItemContainer}>
-                    <Icon clickHandler={handleClick}>
+                    <Icon>
                         <GiCalendar />
                     </Icon>
                     <Container description={"Даты"} value={"27.05 - 06.06"} />
                 </div>
             </div>
+            <Button innerText="поиск тура" appliedStyle="" />
         </form>
-    );
-};
+    )
+}

@@ -15,7 +15,7 @@ export default function Home({ destinationCountries, departureCities }) {
       <Navigation font={rubic.className} />
       <MainHeader font={rubic.className} />
       <Main font={comfortaa.className} />
-      <SearchBar />
+      <SearchBar font={comfortaa.className} />
     </main>
   )
 }

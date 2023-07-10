@@ -56,13 +56,17 @@ async function getData(endPoint) {
   const data = await fetch(base + endPoint, requestOptions)
     .then((response) => {
       console.log(response.status)
-      if (!response.headers.get("content-type").includes("text/xml")) {
-        return response.json();
-      } else {
+      console.log(response.headers.get("content-type"))
+
+      if (response.headers.get("content-type").includes("text/xml")) {
         return response.text().then((xmlText) => xmlToJson(xmlText));
+      } else if (response.headers.get('content-type').includes('javascript')) {
+        return response.text();
+      } else {
+        return response.json();
       }
     })
-    .catch((error) => console.log("errorCustom", error.message));
+    .catch((error) => console.log("Error happen getData", error.message));
   return data;
 }
 
