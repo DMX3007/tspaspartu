@@ -9,7 +9,7 @@ import styles from "../SearchBar.module.scss";
 interface DropDownComboboxProps {
     initialState: string[],
     label: string,
-    onChange: React.Dispatch<React.SetStateAction<string>>
+    onChange: (value: string) => void;
 }
 
 export const DropdownCombobox = ({ initialState, label, onChange }: DropDownComboboxProps) => {
@@ -26,7 +26,7 @@ export const DropdownCombobox = ({ initialState, label, onChange }: DropDownComb
         getItemProps,
     } = useCombobox({
         items: initialState,
-        onSelectedItemChange: onChange,
+        onSelectedItemChange: ({ selectedItem: newSelectedItem }) => onChange(newSelectedItem!),
         onInputValueChange: ({ inputValue }) => {
             if (inputValue) setInputItems(
                 initialState?.filter((item) => item.toLowerCase().startsWith(inputValue.toLowerCase()),
