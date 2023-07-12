@@ -26,7 +26,10 @@ export const DropdownCombobox = ({ initialState, label, onChange }: DropDownComb
         getItemProps,
     } = useCombobox({
         items: initialState,
-        onSelectedItemChange: ({ selectedItem: newSelectedItem }) => onChange(newSelectedItem!),
+        onSelectedItemChange: ({ selectedItem: newSelectedItem }) => {
+            console.log(newSelectedItem)
+            return onChange(newSelectedItem!)
+        },
         onInputValueChange: ({ inputValue }) => {
             if (inputValue) setInputItems(
                 initialState?.filter((item) => item.toLowerCase().startsWith(inputValue.toLowerCase()),
