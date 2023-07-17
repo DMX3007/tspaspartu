@@ -9,7 +9,7 @@ import { SearchBar } from '@/components/SearchBar/SearchBar';
 import { comfortaa } from '@/utils/fonts';
 import { rubic } from '@/utils/fonts';
 
-export default function Home({ destinationCountries, departureCities }) {
+export default function Home() {
   return (
     <main className={classNames(comfortaa.className)}>
       <Navigation font={rubic.className} />

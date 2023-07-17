@@ -1,12 +1,12 @@
-type NestedObject = {
+export type NestedObject = {
     n_f?: string;
     n?: string;
     t?: number[];
 }
 
-type NestedArray = [number, NestedObject][];
+export type NestedArray = [number, NestedObject][];
 
-type ApiResponseStructure = {
+export type ApiResponseStructure = {
     flt2from?: NestedArray;
     flt2?: NestedArray;
     flt?: NestedArray;

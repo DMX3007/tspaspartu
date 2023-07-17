@@ -9,13 +9,10 @@ $shadow-nav: rgba(0, 0, 255, .2);
 $light-red: #ff4c5a;
 $mobile-menu: rgba(125, 159, 175, 0.35);
 .wrapper {
-    height: auto;
     cursor: pointer;
-    padding: 5%;
     box-shadow: 2px 2px 1px $shadow-nav, -1px -1px 1px $shadow-nav;
     background-color: $bluee;
-    border-radius: 10px;
-    border: 1px solid $sky-color;
+    border-radius: 5px;
 }
 
 .wrapperIcon {
@@ -24,6 +21,8 @@ $mobile-menu: rgba(125, 159, 175, 0.35);
 }
 
 .wrapperIcon__icon {
-    width: 18px;
+    margin-top: 5px;
+    width: 35px;
+    height: 30px;
     color:$cloud-color
 }

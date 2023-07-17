@@ -1,7 +1,8 @@
+import { error } from "console";
 import tough from "tough-cookie";
 import { parseString } from "xml2js";
 
-function xmlToJson(xml) {
+function xmlToJson(xml:string) {
   return new Promise((resolve, reject) => {
     parseString(xml, (err, result) => {
       if (err) {
@@ -19,51 +20,70 @@ const urlAuth =
   `${process.env.BG_PWD}`;
 const base = "http://export.bgoperator.ru";
 let Cookie = tough.Cookie;
-var myHeaders = new Headers();
+let myHeaders = new Headers();
 myHeaders.append("Accept-Encoding", "gzip");
 
-var requestOptions = {
+const requestOptions: RequestInit = {
   method: "POST",
   headers: myHeaders,
   redirect: "manual",
 };
 
+const COOKIE_FROM_HEADER = "set-cookie";
 
-export async function getFreshCookie() {
+export async function getFreshCookie():Promise<void | tough.Cookie> {
   let freshCookies = await fetch(urlAuth, requestOptions)
     .then((res) => {
       if (res.status >= 400) {
-        throw new Error(`${res.status} статус`)
+        throw new Error(`${res.status} status getFreshCookie fn`)
       } 
-      if (!res) throw new Error("38 строка getdata api упало");
-      return Cookie.parse(res.headers.get("set-cookie"));
+      if (!res) {
+        throw new Error("getdata api down getFreshCookie fn");
+      }
+      return Cookie.parse(res.headers.get(COOKIE_FROM_HEADER)!);
     })
     .catch((error) => console.log("error", error));
   return freshCookies;
 }
 
-async function getData(endPoint) {
+
+async function getData(endPoint:string) {
   const refreshedCookies = await getFreshCookie();
   const headers = new Headers();
-  headers.append("Cookie", refreshedCookies);
+  const some = JSON.stringify(refreshedCookies)
+  if (refreshedCookies) {
+    headers.append("Cookie", some);
+  }
 
-  const requestOptions = {
+  const requestOptions:RequestInit = {
     method: "GET",
     headers: headers,
     redirect: "follow",
   };
 
   const data = await fetch(base + endPoint, requestOptions)
-    .then((response) => {
-      console.log(response.status)
-      console.log(response.headers.get("content-type"))
-
-      if (response.headers.get("content-type").includes("text/xml")) {
-        return response.text().then((xmlText) => xmlToJson(xmlText));
-      } else if (response.headers.get('content-type').includes('javascript')) {
-        return response.text();
-      } else {
-        return response.json();
+    .then(async (response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText)
+      }
+      if (response.headers.get("content-type")!.includes("text/xml")) {
+        const xmlText = await response.text();
+        const str = await xmlToJson(xmlText);
+        console.log(typeof str);
+        console.log(xmlText)
+        console.log(str)
+        if (typeof str === 'string') return str;
+        throw new Error('Custom Error: getData - const str != string')
+      } else if (response.headers.get('content-type')!.includes('javascript')) {
+        const jsToText =await response.text()
+        if (typeof jsToText === 'string') return jsToText;
+        throw new Error('Custom Error: getDate - const jsToText != string type')
+      } else {  
+        const obj = await response.json()
+        if (typeof obj === "object") {
+          return obj;
+        }
+        throw new Error('Custom Error: getData - const obj is not typeof Object')
       }
     })
     .catch((error) => console.log("Error happen getData", error.message));

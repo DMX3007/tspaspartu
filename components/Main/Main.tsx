@@ -11,13 +11,13 @@ export const Main = ({ font }: MainProps): JSX.Element => {
     return (
         <div className={classNames(styles.main, font)}>
             <LinkedImage
-                className={styles.leftBlockUp}
+                className={styles.leftBlockUp!}
                 text="париж"
                 src="/eiffel_tiny.jpeg"
                 alt="Париж"
             />
             <LinkedImage
-                className={styles.leftBlockDown}
+                className={styles.leftBlockDown!}
                 text="ницца"
                 src="/turkish.jpeg"
                 alt="Ницца"
@@ -36,13 +36,13 @@ export const Main = ({ font }: MainProps): JSX.Element => {
                 }}
             ></Image>
             <LinkedImage
-                className={styles.rightBlockUp}
+                className={styles.rightBlockUp!}
                 text="мале"
                 src="/mald.jpeg"
                 alt="Мале"
             />
             <LinkedImage
-                className={styles.rightBlockDown}
+                className={styles.rightBlockDown!}
                 text="пхукет"
                 src="/phuket.jpg"
                 alt="Пхукет"

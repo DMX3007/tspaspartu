@@ -1,17 +1,6 @@
 const { parseString } = require("xml2js");
+import { NextApiRequest, NextApiResponse } from "next";
 import getData from "./getData";
-
-function xmlToJson(xml) {
-  return new Promise((resolve, reject) => {
-    parseString(xml, (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
-      }
-    });
-  });
-}
 
 async function hotels() {
   try {
@@ -23,7 +12,7 @@ async function hotels() {
   // const json = xmlToJson(hotels);
 }
 
-export default async function handler(req, res) {
+export default async function handler(req:NextApiRequest, res:NextApiResponse) {
   const hotel = await hotels();
 
   console.log(hotel);

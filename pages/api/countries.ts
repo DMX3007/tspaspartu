@@ -6,25 +6,25 @@ async function countries() {
   return countries;
 }
 
-async function checkTours(countries) {
-  let filtered = {};
-  if (countries) {
-    filtered = countries.filter((country) => {
-      if (country.tours === "Да") {
-        return country;
-      }
-    });
-  }
-  return filtered;
-}
+// async function checkTours(countries) {
+//   let filtered = {};
+//   if (countries) {
+//     filtered = countries.filter((country) => {
+//       if (country.tours === "Да") {
+//         return country;
+//       }
+//     });
+//   }
+//   return filtered;
+// }
 
-export default async function handler(req, res) {
-  const countryList = await countries();
-  const countryAvailible = await checkTours(countryList);
-  const russianList = countryAvailible.map((c) => c?.title_ru);
+// export default async function handler(req, res) {
+//   const countryList = await countries();
+//   const countryAvailible = await checkTours(countryList);
+//   const russianList = countryAvailible.map((c) => c?.title_ru);
 
-  res.status(200).json(russianList);
-}
+//   res.status(200).json(russianList);
+// }
 
 // http://export.bgoperator.ru/yandex?action=files&flt=100410000049&flt2=100510000863&xml=11
 //flt=1004 - country where

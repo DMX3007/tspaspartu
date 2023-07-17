@@ -27,9 +27,9 @@ $mobile-menu: rgba(125, 159, 175, 0.35);
 }
 
 .searchItem {
+    display: flex;
     order: 0;
     align-self: center;
-    // display: flex;
     // gap:16px;
     position: relative;
     align-items: center;
@@ -37,7 +37,7 @@ $mobile-menu: rgba(125, 159, 175, 0.35);
 }
 
 .searchItemContainer {
-    display: flex;
+    // display: flex;
 }
 
 .iconWrapper {
@@ -48,16 +48,27 @@ $mobile-menu: rgba(125, 159, 175, 0.35);
 .searchItemContent {
     align-self: center;
     font-size: medium;
+    display: flex;
+    gap: 1rem;
 }
 
 .searchItemDesc{
     color: red;
     font-size:small;
+    align-self: center;
+    // margin-right: 1rem;
 }
 
 .searchItemValue {
+    display: flex;
     margin-top: 5px;
     border: 1px solid $shadow-nav;
+}
+
+.searchItemCalendarInput {
+    margin-top: 5px;
+    border: 1px solid $shadow-nav;
+    padding: 10px 2px;
 }
 
 
@@ -76,6 +87,10 @@ $mobile-menu: rgba(125, 159, 175, 0.35);
     width: 100%;
     top: 42px;
     border-radius: 0px 0px 5px 5px;
+    height: 0;
+}
+.dropDownHidden {
+    width: 100%;
     height: 0;
 }
 
