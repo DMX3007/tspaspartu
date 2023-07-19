@@ -21,9 +21,17 @@ interface SearchBarProps {
 
 export const SearchBar = ({ font }: SearchBarProps): JSX.Element => {
     registerLocale('ru', ru);
-    const [selectedCountry, setSelectedCountry] = useState<string>('')
-    const [selectedItem, setSelectedCity] = useState<string>('')
+    const [selectedCountry, setSelectedCountry] = useState('')
+    const [selectedCity, setSelectedItem] = useState('');
     const [startDate, setStartDate] = useState(new Date());
+
+
+    const handleSelectedItemChange = (value: string) => {
+        setSelectedItem(value);
+    };
+    const handleSelectedCountryChange = (value: string) => {
+        setSelectedCountry(value)
+    }
 
     const { data: list, isLoading, isError } = useQuery({ queryKey: ['item'], queryFn: getDestinationAndDepartures });
 
@@ -37,8 +45,8 @@ export const SearchBar = ({ font }: SearchBarProps): JSX.Element => {
     return (
         <form className={styles.searchBar}>
             {list ? <>
-                <DropdownCombobox initialState={list.flt2!.map(e => e[1].n!)} options={{ label: 'Откуда', font: font }} onChange={(value) => setSelectedCity(value)} />
-                <DropdownCombobox initialState={list.flt!.map(e => e[1].n!)} options={{ label: 'Куда', font: font }} onChange={(value) => setSelectedCountry(value)} />
+                <DropdownCombobox initialState={list.flt2!.map(e => e[1].n!)} options={{ label: 'Откуда', font: font }} onChange={handleSelectedItemChange} selectedItem={selectedCity} />
+                <DropdownCombobox initialState={list.flt!.map(e => e[1].n!)} options={{ label: 'Куда', font: font }} onChange={handleSelectedCountryChange} selectedItem={selectedCountry} />
             </> : "Loading"
             }
             <div className={styles.searchItem}>

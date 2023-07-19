@@ -11,6 +11,7 @@ import classNames from "classnames"
 interface DropDownComboboxProps {
     initialState: string[],
     options: Options,
+    selectedItem: string;
     onChange: (value: string) => void;
 }
 
@@ -19,23 +20,22 @@ interface Options {
     font: string;
 }
 
-export function DropdownCombobox({ initialState, options, onChange }: DropDownComboboxProps) {
+export function DropdownCombobox({ initialState, options, onChange, selectedItem }: DropDownComboboxProps) {
 
-    function getBooksFilter(inputValue: string) {
+    function getItemsFilter(inputValue: string) {
         const lowerCasedInputValue = inputValue.toLowerCase()
 
-        return function booksFilter(book: string) {
+        return function itemsFilter(item: string) {
             return (
                 !inputValue ||
-                book.toLowerCase().includes(lowerCasedInputValue) ||
-                book.toLowerCase().includes(lowerCasedInputValue)
+                item.toLowerCase().includes(lowerCasedInputValue) ||
+                item.toLowerCase().includes(lowerCasedInputValue)
             )
         }
     }
 
-    function ComboBox() {
+    function ComboBox({ initialState, options, onChange, selectedItem }: DropDownComboboxProps) {
         const [items, setItems] = useState(initialState)
-        const [selectedItem, setSelectedItem] = useState("")
         const {
             isOpen,
             getToggleButtonProps,
@@ -46,16 +46,18 @@ export function DropdownCombobox({ initialState, options, onChange }: DropDownCo
             getItemProps,
         } = useCombobox({
             onInputValueChange({ inputValue }) {
-                if (typeof inputValue === "string")
-                    setItems(initialState.filter(getBooksFilter(inputValue)))
+                if (typeof inputValue === "string") {
+                    setItems(initialState.filter(getItemsFilter(inputValue)))
+                } else {
+                    throw new Error('Custom Error: Combobox onInputValueChange else statement')
+                }
             },
             items,
             selectedItem,
-            onSelectedItemChange: ({ selectedItem: newSelectedItem }) => {
-                if (typeof newSelectedItem === 'string') {
-                    setSelectedItem(newSelectedItem)
-                }
-            }
+            onSelectedItemChange: ({ selectedItem }) => {
+                onChange(selectedItem || '');
+            },
+            itemToString: (item) => item || '',
         })
         return (
             <div className={classNames(styles.searchItem, options.font)}>
@@ -105,5 +107,5 @@ export function DropdownCombobox({ initialState, options, onChange }: DropDownCo
             </div>
         )
     }
-    return <ComboBox />
+    return <ComboBox initialState={initialState} options={options} onChange={onChange} selectedItem={selectedItem} />
 }
