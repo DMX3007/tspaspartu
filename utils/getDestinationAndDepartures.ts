@@ -10,6 +10,8 @@ export type ApiResponseStructure = {
     flt2from?: NestedArray;
     flt2?: NestedArray;
     flt?: NestedArray;
+    [key: string]: NestedArray | undefined;
+
 }
 
 export const getDestinationAndDepartures = async ():Promise<ApiResponseStructure> => {
