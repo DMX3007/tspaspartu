@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         let priceList = null;
         if (typeof cityFromId === 'string' && typeof countryToId === 'string') {
-            priceList = await retrievePriceList(countryToId, cityFromId)
+            priceList = await retrievePriceList(cityFromId,countryToId)
             .catch(error => console.log(error));
         }   
         res.status(200).json(priceList);

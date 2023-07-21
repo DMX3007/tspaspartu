@@ -13,6 +13,7 @@ import ru from 'date-fns/locale/ru';
 import classNames from "classnames";
 import getData from "@/pages/api/getData";
 import { NestedObject, NestedArray } from '../../utils/getDestinationAndDepartures';
+import { error } from "console";
 
 interface SearchBarProps {
     font: string;
@@ -49,16 +50,18 @@ interface Data {
     avArr: AvArr[];
 }
 
-async function requestPriceList(cityFrom: NestedArray, countryTo: NestedArray): Promise<Data> {
-    console.log(`/api/retrievePriceList?cityFromId=${cityFrom[0]}&countryToId=${countryTo[0]}`)
-    const response = await fetch(`/api/retrievePriceList?cityFromId=${cityFrom[0]}&countryToId=${countryTo[0]}`);
+async function requestPriceList(cityFrom: [number, NestedObject] | undefined, countryTo: [number, NestedObject] | undefined): Promise<Data> {
+    try {
+        const response = await fetch(`/api/retrievePriceList?cityFromId=${cityFrom![0]}&countryToId=${countryTo![0]}`);
 
-    console.log(response)
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data: Data = await response.json().catch(err => console.error(err)) as Data;
+        return data;
+    } catch (error) {
+        throw error;
     }
-    const data: Data = await response.json() as Data;
-    return data;
 }
 
 export const SearchBar = ({ font }: SearchBarProps): JSX.Element => {
@@ -76,18 +79,19 @@ export const SearchBar = ({ font }: SearchBarProps): JSX.Element => {
 
     const { data: list, isLoading, isError } = useQuery({ queryKey: ['item'], queryFn: getDestinationAndDepartures });
 
-    let idCity: NestedArray;
-    let idCountry: NestedArray;
+    let idCity: [number, NestedObject] | undefined;
+    let idCountry: [number, NestedObject] | undefined;
 
     if (selectedCity && selectedCountry) {
-        idCity = list?.flt2?.find((el) => el[1].n === selectedCity);
+        idCity = list?.flt2?.find((el) => el[1].n === selectedCity)
         console.log(idCity)
         idCountry = list?.flt?.find((el) => el[1].n === selectedCountry);
         console.log(idCountry)
-        flag = true;
-    } else flag = false;
+        flag = idCity !== undefined && idCountry !== undefined;
+    }
 
-    const { data: data2, isLoading: isLoading2, error: isError2 } = useQuery(['entries'], () => { requestPriceList(idCity, idCountry) }, { enabled: flag })
+    const { data: data2, isLoading: isLoading2, error: isError2 } = useQuery(['entries'], () => requestPriceList(idCity!, idCountry!), { enabled: flag });
+
     console.log(data2)
     if (isLoading) {
         return <div>Is Loading...</div>
