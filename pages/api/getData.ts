@@ -1,7 +1,5 @@
 import { Cookie as _Cookie } from "tough-cookie";
 import { parseString } from "xml2js";
-// import fetch from "node-fetch";
-
 interface Cookie {
   key: string;
   value: string;

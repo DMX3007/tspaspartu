@@ -15,7 +15,7 @@ async function fromTo() {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponseStructure>) {
-  const citiesCountryes = await fromTo().catch(error => console.log(error));
+  const citiesCountryes = await fromTo().catch(error => console.log(error)) as ApiResponseStructure;
   if (citiesCountryes) {
     res.status(200).json(citiesCountryes);
   }

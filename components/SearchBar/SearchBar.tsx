@@ -93,6 +93,7 @@ export const SearchBar = ({ font }: SearchBarProps): JSX.Element => {
     const { data: data2, isLoading: isLoading2, error: isError2 } = useQuery(['entries'], () => requestPriceList(idCity!, idCountry!), { enabled: flag });
 
     console.log(data2)
+
     if (isLoading) {
         return <div>Is Loading...</div>
     }
