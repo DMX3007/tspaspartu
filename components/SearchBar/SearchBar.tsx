@@ -2,18 +2,15 @@ import { useState, useCallback, useEffect } from "react";
 import { GiCalendar } from 'react-icons/gi'
 import { Button } from "../Button/Button";
 import { Icon } from './Icon/Icon';
-import styles from "./SearchBar.module.scss";
 import { useQuery } from "@tanstack/react-query";
 import { DropdownCombobox } from "./DropdownCombobox/DropdownCombobox";
-import { createMap } from "@/utils/createMap";
 import { getDestinationAndDepartures } from '@/utils/getDestinationAndDepartures';
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from 'date-fns/locale/ru';
 import classNames from "classnames";
-import getData from "@/pages/api/getData";
-import { NestedObject, NestedArray } from '../../utils/getDestinationAndDepartures';
-import { error } from "console";
+import { NestedObject } from '../../utils/getDestinationAndDepartures';
+import styles from "./SearchBar.module.scss";
 
 interface SearchBarProps {
     font: string;
@@ -84,15 +81,11 @@ export const SearchBar = ({ font }: SearchBarProps): JSX.Element => {
 
     if (selectedCity && selectedCountry) {
         idCity = list?.flt2?.find((el) => el[1].n === selectedCity)
-        console.log(idCity)
         idCountry = list?.flt?.find((el) => el[1].n === selectedCountry);
-        console.log(idCountry)
         flag = idCity !== undefined && idCountry !== undefined;
     }
 
     const { data: data2, isLoading: isLoading2, error: isError2 } = useQuery(['entries'], () => requestPriceList(idCity!, idCountry!), { enabled: flag });
-
-    console.log(data2)
 
     if (isLoading) {
         return <div>Is Loading...</div>
