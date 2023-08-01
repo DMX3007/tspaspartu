@@ -1,0 +1,33 @@
+version: "3.3"
+
+services:
+  tspapartu:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./:/usr/app"
+    networks:
+      - innernet
+
+  db:
+    image: postgres:15-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=enrichedHotels
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - innernet
+
+networks:
+  innernet:
+
+volumes:
+  db:
