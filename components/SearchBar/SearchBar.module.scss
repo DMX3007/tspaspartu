@@ -23,7 +23,7 @@ $mobile-menu: rgba(125, 159, 175, 0.35);
     // justify-content: space-around;
     flex-direction: column;
     gap: 10px;
-    z-index: -1;
+    z-index: 1;
 }
 
 .searchItem {

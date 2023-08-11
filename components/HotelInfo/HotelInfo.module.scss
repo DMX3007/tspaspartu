@@ -1,0 +1,27 @@
+.hotel_info {
+    display: flex;
+    margin-bottom: 20px;
+    .hotel_img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      margin-right: 20px;
+    }
+    .hotel_desc {
+      flex-grow: 1;
+      .price {
+        color: #f00;
+        font-weight: bold;
+      }
+      .booking_btn {
+        background-color: #0066cc;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        &:hover {
+          background-color: #0055a3;
+        }
+      }
+    }
+  }

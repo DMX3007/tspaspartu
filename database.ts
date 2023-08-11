@@ -5,7 +5,7 @@ const dbConfig: PoolConfig = {
   password: 'admin',
   host: 'db', // Assuming the database container is linked as 'db' in the Docker Compose network
   port: 5432,
-  database: 'admin',
+  database: 'hotels',
 };
 
 const pool = new Pool(dbConfig);
@@ -13,6 +13,7 @@ const pool = new Pool(dbConfig);
 export async function query<T = QueryResultRow>(text: string, values?: any[]): Promise<T[]> {
   const client = await pool.connect();
   try {
+    //TODO: fix any T
     //@ts-ignore
     const result = await client.query<T>(text, values);
     return result.rows;

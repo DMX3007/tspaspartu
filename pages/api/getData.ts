@@ -77,7 +77,6 @@ async function getFreshCookie() {
       return Cookie.parse(res.headers.get("set-cookie")!);
     })
     .catch((error) => console.log("error", error));
-    console.log(freshCookies)
   return freshCookies;
 }
 
@@ -108,7 +107,6 @@ async function getData(endPoint:string) {
       }
     })
     .catch((error) => console.log("errorCustom", error.message));
-  console.log(data);
   return data;
 }
 

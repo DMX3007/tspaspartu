@@ -14,7 +14,5 @@ async function hotels() {
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
   const hotel = await hotels();
-
-  console.log(hotel);
   res.status(200).json(hotel);
 }

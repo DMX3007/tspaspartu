@@ -1,0 +1,5 @@
+.info_column {
+    // width: calc(100% - 300px - 40px); // take into account the width and padding of the filter column
+    padding: 20px;
+    overflow-y: auto; // in case of many hotels
+  }

@@ -1,0 +1,17 @@
+.filter {
+    margin-bottom: 20px;
+    h3 {
+      font-size: 1.2em;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      cursor: pointer;
+      input {
+        cursor: pointer;
+        margin-right: 5px;
+      }
+    }
+  }

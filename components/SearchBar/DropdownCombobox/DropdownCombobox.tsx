@@ -77,10 +77,10 @@ export function DropdownCombobox({ initialState, options, onChange, selectedItem
                             type="button"
                             {...getToggleButtonProps()}
                         >
-                            {isOpen ? <Icon clickHandler={() => { }}>
+                            {isOpen ? <Icon onClick={() => { }}>
                                 <GiAirplaneDeparture />
                             </Icon>
-                                : <Icon clickHandler={() => { }}>
+                                : <Icon onClick={() => { }}>
                                     <GiAirplaneDeparture />
                                 </Icon>}
                         </button>

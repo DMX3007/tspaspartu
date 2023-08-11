@@ -1,0 +1,30 @@
+.filter_column {
+    position: fixed;
+    left: 20px;
+    // width: 300px;
+    color: white;
+    background: linear-gradient(0deg, #f34079 25%, #fc894d 100%);
+    padding: 20px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0.3s ease-out;
+    transform: translateX(0%); 
+    opacity: 0.9;
+    visibility: visible;
+    z-index: 1;
+    top: 48px;
+}
+
+.filter_column-hidden {
+    position: fixed;
+    top: 48px;
+    // width: 300px;
+    padding: 20px;
+    left: 20px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0.3s ease-out;
+    transform: translateX(-100%); 
+    opacity: 0;
+    visibility: hidden;
+}
