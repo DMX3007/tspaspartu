@@ -1,4 +1,5 @@
 import '../styles/reset.scss'
+import '../styles/global.scss'
 import type { AppProps } from 'next/app'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';

@@ -5,7 +5,7 @@ const dbConfig: PoolConfig = {
   password: 'admin',
   host: 'db', // Assuming the database container is linked as 'db' in the Docker Compose network
   port: 5432,
-  database: 'hotels',
+  database: 'enrichedHotels',
 };
 
 const pool = new Pool(dbConfig);
@@ -32,4 +32,20 @@ export async function update<T = QueryResultRow>(text: string, values?: any[]): 
 
 export async function remove<T = QueryResultRow>(text: string, values?: any[]): Promise<T[]> {
   return query<T>(text, values);
+}
+
+export async function createTable(): Promise<void> {
+  const createTableQuery = `
+  CREATE TABLE IF NOT EXISTS hotels (
+    key VARCHAR(255) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    stars VARCHAR(10),
+    countryKey VARCHAR(255),
+    cityKey VARCHAR(255),
+    cityName VARCHAR(255),
+    countryName VARCHAR(255)
+  );
+`;
+
+ await query(createTableQuery);
 }

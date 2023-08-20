@@ -1,3 +1,14 @@
+$sky-color: rgba(104, 178, 192, 1);
+$sky-color2: rgba(105, 193, 179, 1);
+$cloud-color: rgba(236, 226, 177, 1);
+$border-color: rgba(119, 61, 6, 1);
+$bluee: #0091ff;
+$background-hover: #005ea8;
+$desert-color: rgba(239, 198, 128, 1);
+$shadow-nav: rgba(0, 0, 255, .2);
+$light-red: #ff4c5a;
+$mobile-menu: rgba(125, 159, 175, 0.35);
+
 .container {
     position: relative;
     width: 400px;
@@ -24,27 +35,14 @@
     }
 }
 
-
-.swiper {
-  width: 100%;
-  height: 100%;
-}
-
-.swiper-wrapper {
-    padding: 10px;  
-}
-
-.swiper-slide {
-
+.swiper-slide-transform {
+    padding-top: 6px;
     border-radius: 10px;
     box-shadow: -2px 2px 4px rgba($color: #302f2fd5, $alpha: .4), 2px 2px 4px rgba($color: #302f2fd5, $alpha: .4);
-    padding: 10px;
-    text-align: center;
-    font-size: 18px;
-    background: #ffffff;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: linear-gradient(180deg,  rgba(255,255,255,0.25) 0%,rgba(255,255,255,0.25) 30%,rgba(125,159,175,0.25) 40%,rgba(125,159,175,0.35) 100%);
+    // background-color: $desert-color;
     cursor: pointer;
+    text-align: center;
+    height: 60px;
 }
+

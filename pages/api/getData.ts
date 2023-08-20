@@ -1,5 +1,5 @@
-import { Cookie as _Cookie } from "tough-cookie";
 import { parseString } from "xml2js";
+
 interface Cookie {
   key: string;
   value: string;
@@ -9,6 +9,41 @@ interface Cookie {
   httpOnly: boolean;
   extensions: string[];
   creation: string;
+}
+
+function parseCookies(cookieString) {
+  const cookieSets = cookieString.split(", ");
+
+  const cookies = cookieSets.map((cookieSet) => {
+    const cookiePairs = cookieSet.split("; ");
+
+    const cookie = {};
+    cookiePairs.forEach((pair) => {
+      const [name, value] = pair.split("=");
+      cookie[name.trim()] = value;
+    });
+
+    return cookie;
+  });
+
+  return cookies;
+}
+
+function getMainCookieString(parsedCookies) {
+  const mainKeys = ["A1", "L", "Z1"];
+
+  const mainCookiePairs = mainKeys.map((key) => {
+    const cookie = parsedCookies.find((cookie) => cookie.hasOwnProperty(key));
+    if (cookie) {
+      return `${key}=${cookie[key]}`;
+    }
+    return "";
+  });
+
+  const mainCookieString = mainCookiePairs
+    .filter((pair) => pair !== "")
+    .join("; ");
+  return mainCookieString + ";";
 }
 
 function cookieObjectToString(cookieObject:Cookie) {
@@ -58,7 +93,6 @@ function xmlToJson(xml:string) {
 }
 
 const base = "http://export.bgoperator.ru";
-let Cookie = _Cookie;
 const myHeaders = new Headers();
 myHeaders.append("Accept-Encoding", "gzip");
 
@@ -74,28 +108,37 @@ async function getFreshCookie() {
     requestOptions
   )
     .then((res) => {
-      return Cookie.parse(res.headers.get("set-cookie")!);
+      return res.headers.get("set-cookie")!;
     })
     .catch((error) => console.log("error", error));
   return freshCookies;
 }
 
+const refreshedHeaders = new Headers();
 
 async function getData(endPoint:string) {
-  const rawRefreshedCookies = await getFreshCookie();
-  const mHeaders = new Headers();
-  const strCookieObject = JSON.stringify(rawRefreshedCookies);
-  const cookieObj = JSON.parse(strCookieObject) as Cookie;
-  mHeaders.append("Cookie", cookieObjectToString(cookieObj));
+  const rawRefreshedCookies = await getFreshCookie() as string;
+  const objCookies = parseCookies(rawRefreshedCookies);
+  const preparedCookies = getMainCookieString(objCookies);
+  refreshedHeaders.append('Cookie', preparedCookies)
 
   const requestOptions:RequestInit = {
     method: "GET",
-    headers: mHeaders,
+    headers: refreshedHeaders,
     redirect: "follow",
   };
 
   const data = await fetch(base + endPoint, requestOptions)
     .then(async (response) => {
+      if (response.status === 401) {
+         const newCookie = await getFreshCookie();
+       const newHeaders = new Headers();
+       newHeaders.append("Cookie", newCookie);
+       const data = await fetch(base + endPoint, {
+        method: 'GET',
+        headers: newHeaders,
+       })
+      }
       if (response.headers.get("content-type")!.includes("text/xml")) {
         return response.text().then((xmlText) => xmlToJson(xmlText));
       } else if (response.headers.get('content-type')!.includes('javascript')) {
