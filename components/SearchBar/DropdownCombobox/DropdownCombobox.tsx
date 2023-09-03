@@ -1,11 +1,8 @@
 import { Icon } from "../Icon/Icon"
 import { useCombobox } from "downshift"
-import { useState, useId } from "react"
-import { GiAirplaneArrival, GiAirplaneDeparture } from 'react-icons/gi'
-import { items, menuStyles, comboboxStyles } from '../shared'
+import { useState } from "react"
+import { GiAirplaneDeparture } from 'react-icons/gi'
 import styles from "../SearchBar.module.scss";
-import { NestedArray, NestedObject } from "@/utils/getDestinationAndDepartures"
-import { UseComboboxState } from "downshift"
 import classNames from "classnames"
 
 interface DropDownComboboxProps {

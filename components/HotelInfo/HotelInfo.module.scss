@@ -1,6 +1,7 @@
 .hotel_info {
     display: flex;
     margin-bottom: 20px;
+    flex-direction: column;
     .hotel_img {
       width: 150px;
       height: 150px;

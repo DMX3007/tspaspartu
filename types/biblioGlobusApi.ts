@@ -43,3 +43,34 @@ export interface Data {
     mrArr: MrArr[];
     avArr: AvArr[];
 }
+
+
+export interface Partner {
+    RUR: string;
+    entries: Entries[]; // Replace 'any' with the appropriate type for entries
+    href0: string;
+    next_page: string;
+    prx: string;
+}
+
+export interface Entries {
+    aircompany: string;
+    dt: string;
+    duration: string;
+    href1: string;
+    id_hotel: string;
+    id_ns: string;
+    id_price: string;
+    o_duration: string;
+    prices: Prices[]; // Replace 'any' with the appropriate type for prices
+    quota: string;
+    room: string;
+    sr?: string;
+    tour_date: string;
+    town: string;
+}
+export interface Prices {
+    ag: string;
+    amount: string;
+    href2: string;
+}

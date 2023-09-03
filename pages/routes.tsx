@@ -52,37 +52,18 @@ const filters = [
     },
 ];
 
-const hotels = [
-    {
-        imgSrc: "https://via.placeholder.com/150",
-        description: "Hotel 1 description",
-        price: "$100",
-    }, {
-        imgSrc: "https://via.placeholder.com/150",
-        description: "Hotel 1 description",
-        price: "$100",
-    }, {
-        imgSrc: "https://via.placeholder.com/150",
-        description: "Hotel 1 description",
-        price: "$100",
-    }, {
-        imgSrc: "https://via.placeholder.com/150",
-        description: "Hotel 1 description",
-        price: "$100",
-    }, {
-        imgSrc: "https://via.placeholder.com/150",
-        description: "Hotel 1 description",
-        price: "$100",
-    },
-];
-
 const getImages = async (hotelName: string, hotelCity: string, hotelCountry: string) => {
     // return await fetch(`/api/retrievePriceList?hotelName=${hotelName}&hotelCity=${hotelCity}&hotelCountry=${hotelCountry}`)
 }
 
 export default function Routes() {
+    const INDPRICELISTDEFAULT = 0;
+    // init value from data.entries array such as : [ Phuket , Patayya ... ] 
+    const [selectedRouteIndex, setSelectedRouteIndex] = useState(INDPRICELISTDEFAULT);
+
     const [isFilterVisible, setFilterVisible] = useState(false);
     const [isSearchBarVisible, setSearchBarVisible] = useState(true);
+    const [swiperRef, setSwiperRef] = useState(() => { });
     const router = useRouter()
     const { idCity, idCountry } = router.query;
 
@@ -108,8 +89,11 @@ export default function Routes() {
     const handleButtonClick = () => {
         setFilterVisible(!isFilterVisible);
     };
-    const onClick = () => {
+    const handleSearchVisible = () => {
         setSearchBarVisible(!isSearchBarVisible)
+    }
+    const hadleSelectedSlide = () => {
+        setSelectedRouteIndex(swiperRef.clickedIndex)
     }
 
     return (
@@ -143,7 +127,7 @@ export default function Routes() {
                             }>travel</span>
                         </h2>
                     </div>
-                    <Icon onClick={onClick}>
+                    <Icon onClick={handleSearchVisible}>
                         <ImSearch />
                     </Icon >
                 </div>
@@ -156,7 +140,7 @@ export default function Routes() {
                     "--swiper-pagination-bullet-size": "12px",
                     "--swiper-pagination-bullet-horizontal-gap": "1%",
                 }}
-                    onSwiper={(swiper) => console.log(swiper)}
+                    onSwiper={setSwiperRef}
                     onSlideChange={() => console.log('slide change')}
                     spaceBetween={10}
                     slidesPerView={2}
@@ -178,17 +162,17 @@ export default function Routes() {
                     className={styles.swiper}
                 >
                     {data.mrArr && data.mrArr.length ? data.mrArr.map(offer => (
-                        <SwiperSlide key={offer.name + offer.id}>
+                        <SwiperSlide key={offer.name + offer.id} onClick={hadleSelectedSlide}>
                             <div className={styles['swiper-slide-transform']}>{offer.name}</div>
                         </SwiperSlide>
-                    )) : ['lol']}
+                    )) : ['EMPTY ROUTES']}
                 </Swiper>
                 <div className={isSearchBarVisible ? styles.searchBar_hidden : styles.searchBar_visible}>
                     <SearchBar font={comfortaa.className} />
                 </div>
                 <FilterColumn filters={filters} isFilterVisible={isFilterVisible} />
                 {data.entries ?
-                    <InfoColumn priceList={data.entries} /> :
+                    <InfoColumn priceList={data.entries} selectedRouteIndex={selectedRouteIndex} /> :
                     <div>...LOADING HOTELS</div>
                 }
             </div >

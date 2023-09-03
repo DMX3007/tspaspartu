@@ -5,7 +5,7 @@ import styles from "./Button.module.scss";
 interface ButtonProps {
     appliedStyle: 'contactUs' | 'booking' | 'searchingBar';
     innerText: string;
-    path: string;
+    path?: string;
     idCity?: string,
     idCountry?: string
 }

@@ -26,8 +26,8 @@ export const SearchBar = ({ font, className }: SearchBarProps): JSX.Element => {
 
     const { data: list, isLoading, isError } = useQuery(['item'], getDestinationAndDepartures, { staleTime: 30000 });
 
-    let idCity: string = ''
-    let idCountry: string = ''
+    let idCity = '';
+    let idCountry = '';
 
     if (selectedCity && selectedCountry && list) {
         idCity = String(list.flt2?.find((el) => el[1].n === selectedCity)?.[0]);
