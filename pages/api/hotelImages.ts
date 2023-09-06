@@ -27,7 +27,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     client.release();
     // const arr = (rows.map(img => img.rows)).flat();
     // const arr2 = arr.map(im => im[0]?.imageurl)
-    console.log(map);
     res.json(map);
   } catch (error) {
     console.error('Error executing query', error);
