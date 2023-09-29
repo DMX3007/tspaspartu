@@ -9,25 +9,29 @@ interface Hotel {
   countryName: string;
   cityName: string;
   countryKey: string;
-  cityKey:string
+  cityKey: string;
 }
 
-export async function enrichData() {
+export async function enrichData(keys?: string) {
   try {
     const hotels = await getData("/yandex?action=hotelsJson");
     const cities = await getData("/auto/jsonResorts.json");
     const countries = await getData("/yandex?action=countries");
 
-    const citiesMap = new Map(cities.map((city:any) => [city.id, city.title_ru]));
+    const citiesMap = new Map(cities.map((city: any) => [city.id, city.title_ru]));
     const countriesMap = new Map(
-      countries.map((country:any) => [country.id, country.title_ru])
+      countries.map((country: any) => [country.id, country.title_ru])
     );
 
-    const enrichedHotels = hotels.map((hotel:any) => ({
+    let enrichedHotels = hotels.map((hotel: any) => ({
       ...hotel,
       cityName: citiesMap.get(hotel.cityKey) || hotel.cityKey,
       countryName: countriesMap.get(hotel.countryKey) || hotel.countryKey,
     }));
+
+    if (keys && keys.length > 0) {
+      enrichedHotels = enrichedHotels.filter((hotel: Hotel) => keys.includes(hotel.key));
+    }
 
     return enrichedHotels as Hotel[];
   } catch (error) {
@@ -36,17 +40,9 @@ export async function enrichData() {
   }
 }
 
-async function hotels() {
-  try {
-    const hotels = await enrichData();
-    return hotels;
-  } catch (error) {
-    console.error(error);
-  }
-  // const json = xmlToJson(hotels);
-}
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const keys = req.query.key ? req.query.key : undefined;
 
-export default async function handler(req:NextApiRequest, res:NextApiResponse) {
-  const hotel = await hotels();
-  res.status(200).json(hotel);
+  const hotels = await enrichData(keys);
+  res.status(200).json(hotels);
 }

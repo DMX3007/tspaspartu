@@ -67,14 +67,14 @@ export default function Routes() {
     const router = useRouter()
     const { idCity, idCountry } = router.query;
 
-    const { isLoading, data, isError } = useQuery(['entries'], () => {
+    const { isLoading, data: priceLists, isError } = useQuery(['entries'], () => {
         if (!idCity || !idCountry) {
             return Promise.reject(new Error('idCity or idCountry is missing'));
         }
         const city = Array.isArray(idCity) ? idCity[0] : idCity;
         const country = Array.isArray(idCountry) ? idCountry[0] : idCountry;
         return requestPriceList(String(country), String(city));
-    }, { enabled: !!(idCity && idCountry), staleTime: 300000 });
+    }, { enabled: !!(idCity && idCountry), staleTime: 300000, refetchOnWindowFocus: false });
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -137,7 +137,7 @@ export default function Routes() {
                     "--swiper-pagination-top": "61px",
                     "--swiper-pagination-bullet-inactive-color": "#999999",
                     "--swiper-pagination-bullet-inactive-opacity": "0.5",
-                    "--swiper-pagination-bullet-size": "12px",
+                    "--swiper-pagination-bullet-size": "8px",
                     "--swiper-pagination-bullet-horizontal-gap": "1%",
                 }}
                     onSwiper={setSwiperRef}
@@ -161,8 +161,14 @@ export default function Routes() {
                     modules={[Pagination, Navigation]}
                     className={styles.swiper}
                 >
-                    {data.mrArr && data.mrArr.length ? data.mrArr.map(offer => (
-                        <SwiperSlide key={offer.name + offer.id} onClick={hadleSelectedSlide}>
+                    {priceLists.mrArr && priceLists.mrArr.length ? priceLists.mrArr.map(offer => (
+                        <SwiperSlide style={{
+                            fontWeight: 'bold',
+                            color: '#333',
+                            textDecoration: 'none',
+                            transition: 'color 0.3s ease',
+                        }
+                        } key={offer.name + offer.id} onClick={hadleSelectedSlide}>
                             <div className={styles['swiper-slide-transform']}>{offer.name}</div>
                         </SwiperSlide>
                     )) : ['EMPTY ROUTES']}
@@ -171,8 +177,8 @@ export default function Routes() {
                     <SearchBar font={comfortaa.className} />
                 </div>
                 <FilterColumn filters={filters} isFilterVisible={isFilterVisible} />
-                {data.entries ?
-                    <InfoColumn priceList={data.entries} selectedRouteIndex={selectedRouteIndex} /> :
+                {priceLists.entries ?
+                    <InfoColumn priceList={priceLists.entries} selectedRouteIndex={selectedRouteIndex} /> :
                     <div>...LOADING HOTELS</div>
                 }
             </div >

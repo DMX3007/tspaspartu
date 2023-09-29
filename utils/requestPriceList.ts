@@ -1,7 +1,6 @@
-import { Data, NestedObject } from "@/types/biblioGlobusApi";
+import { Data } from "@/types/biblioGlobusApi";
 
 export async function requestPriceList(countryTo: string, cityFrom: string): Promise<Data> {
-    // const response = await fetch(`/api/retrievePriceList?cityFromId=${cityFrom}&countryToId=${countryTo}`);
     const response = await fetch(`/api/retrievePriceList?cityFromId=${cityFrom}&countryToId=${countryTo}`);
     if (!response.ok) {
         throw new Error('Network response was not ok');

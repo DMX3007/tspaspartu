@@ -38,7 +38,6 @@ export const InfoColumn = ({ priceList, selectedRouteIndex }: IInfoColumn) => {
     }
     return (
         <div className={styles.info_column}>
-            {/* {data?.entries.map(hotel => (<li>{hotel.id_hotel}</li>))}; */}
             <HotelInfo entries={data?.entries!} />
         </div>)
 }

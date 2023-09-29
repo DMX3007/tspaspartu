@@ -16,7 +16,7 @@ interface IHotelInfo {
     entries: Entries[],
 }
 
-function filterHotels(arr: Entries[], condition: string, modified: [Entries[]]): void {
+function filterUniqHotels(arr: Entries[], condition: string, modified: [Entries[]]): void {
     const filtered = arr.filter(el => el.id_hotel === condition);
     modified.push(filtered);
 }
@@ -30,39 +30,101 @@ async function fetchImages(hotelsIds: string[]): Promise<HotelUrls> {
     return data as HotelUrls;
 }
 
+async function fetchHotelData(hotelsIds: string[]) {
+    try {
+        const response = await fetch(`api/hotels?key=${hotelsIds}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error while fetching hotel data:", error);
+        throw error;
+    }
+}
+
 export const HotelInfo = ({ entries }: IHotelInfo) => {
     let uniqueHotelsIds: string[] = [];
-    let modifiedEntries = [];
+    let nextIndex = 0;
+    let src = '/';
+    let arrayOfUniqHotels = [];
     if (entries && entries.length) {
         uniqueHotelsIds = [...new Set(entries.map(el => el.id_hotel))];
         uniqueHotelsIds.forEach(uniqId => {
-            filterHotels(entries, uniqId, modifiedEntries);
+            filterUniqHotels(entries, uniqId, arrayOfUniqHotels);
         })
     }
 
     const { data: hotelImgUrls, isLoading, isError } = useQuery({
         queryKey: ['urls'], queryFn: () => {
-            // const hotelsIds = entries.map(el => el.id_hotel);
-            // console.log(hotelsIds)
             return fetchImages(uniqueHotelsIds);
         }, enabled: !!(entries && entries.length),
     })
+
+    const { data: hotelData, isLoading: LoadingHotels, isError: ErrorHotels } = useQuery({
+        queryKey: ['name'], queryFn: () => {
+            return fetchHotelData(uniqueHotelsIds);
+        }, enabled: !!(entries && entries.length),
+    })
+    console.log(hotelData);
 
     if (isLoading) {
         return <div>is LOading...</div>
     }
 
     function getNextElement(arr, currentIndex) {
-        const element = arr[currentIndex];
         currentIndex = (currentIndex + 1) % arr.length; // Используем оператор % для перехода к следующему индексу в массиве
         return currentIndex;
     }
 
+    const buttonStyle = {
+        display: 'inline-block',
+        padding: '10px 20px',
+        fontSize: '16px',
+        fontWeight: 'bold',
+        color: '#fff',
+        backgroundColor: '#ff385c',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s ease',
+    };
+
+    const hoverStyle = {
+        backgroundColor: '#e6004d',
+    };
+
+    const activeStyle = {
+        backgroundColor: '#cc003f',
+    };
+
+    const cardStyle = {
+        padding: '20px',
+        backgroundColor: '#fff',
+        borderRadius: '8px',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+        border: '1px solid #ddd',
+    };
+
+    const titleStyle = {
+        fontSize: '20px',
+        fontWeight: 'bold',
+        marginBottom: '10px',
+    };
+
+    const descriptionStyle = {
+        fontSize: '16px',
+        color: '#666',
+        marginBottom: '10px',
+    };
+
+    const priceStyle = {
+        fontSize: '18px',
+        fontWeight: 'bold',
+    };
+    console.log(arrayOfUniqHotels)
     return (
         <div>
-            {modifiedEntries.length ? (
-                modifiedEntries.map((el) => {
-
+            {arrayOfUniqHotels.length ? (
+                arrayOfUniqHotels.map((el) => {
                     return (
                         <Swiper
                             effect={'cards'}
@@ -71,26 +133,24 @@ export const HotelInfo = ({ entries }: IHotelInfo) => {
                             modules={[EffectCards]}
                             style={{ width: '240px', height: '350px', marginBottom: '10px' }}
                         >
-                            {el.map((subEl: Entries, index) => {
-                                const nextIndex = getNextElement(hotelImgUrls[Number(subEl.id_hotel)], index);
-                                const src = hotelImgUrls[Number(subEl.id_hotel)][nextIndex]!.image_url;
+                            {el.map((subEl: Entries, index: number) => {
+                                try {
+                                    nextIndex = getNextElement(hotelImgUrls![Number(subEl.id_hotel)], index);
+                                    src = hotelImgUrls![Number(subEl.id_hotel)]![nextIndex]!.image_url;
+                                } catch (error) {
+                                    nextIndex = 0;
+                                }
+
                                 return (
                                     <SwiperSlide
                                         key={index}
-                                        style={{
-                                            backgroundColor: '#FeFeFe',
-                                            boxShadow: '3px 3px 5px 0px grey, 0px 0px 5px 0px grey',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            borderRadius: '18px',
-                                        }}
+                                        style={cardStyle}
                                     >
                                         <div className={styles.hotel_desc}>
                                             <p>{subEl.town}</p>
                                             {hotelImgUrls &&
                                                 hotelImgUrls[Number(subEl.id_hotel)] &&
-                                                hotelImgUrls[Number(subEl.id_hotel)][nextIndex] ? (
+                                                hotelImgUrls[Number(subEl.id_hotel)]![nextIndex] ? (
                                                 <Image
                                                     loader={({ src, width }) => { return src + "?w=" + width }}
                                                     src={src}
@@ -101,10 +161,16 @@ export const HotelInfo = ({ entries }: IHotelInfo) => {
                                             ) : (
                                                 <Image src="/" width={200} height={200} alt="" />
                                             )}
-                                            <p>{subEl.id_hotel}</p>
-                                            {/* <p className={styles.price}>{subEl.prices.map(el => el.amount)}</p> */}
-                                            <p>{subEl.room}</p>
-                                            <Button appliedStyle="booking" innerText={subEl.prices.map(el => el.amount)} />
+
+                                            <h2 style={titleStyle}>{subEl.id_hotel}</h2>
+                                            <p style={descriptionStyle}>{subEl.tour_date}</p>
+                                            <p style={descriptionStyle}>{subEl.duration}</p>
+                                            <button style={buttonStyle} >
+                                                {subEl.prices.map(el => el.amount)}
+                                            </button>
+
+
+                                            {/* <Button appliedStyle="booking" innerText={subEl.prices.map(el => el.amount)} /> */}
                                         </div>
                                     </SwiperSlide>
                                 )

@@ -59,5 +59,3 @@ export const Button = ({ appliedStyle, innerText, path, idCity, idCountry }: But
         </button>
     );
 };
-
-

@@ -37,10 +37,6 @@ $mobile-menu: rgba(125, 159, 175, 0.35);
 
 .swiper-slide-transform {
     padding-top: 6px;
-    border-radius: 10px;
-    box-shadow: -2px 2px 4px rgba($color: #302f2fd5, $alpha: .4), 2px 2px 4px rgba($color: #302f2fd5, $alpha: .4);
-    background: linear-gradient(180deg,  rgba(255,255,255,0.25) 0%,rgba(255,255,255,0.25) 30%,rgba(125,159,175,0.25) 40%,rgba(125,159,175,0.35) 100%);
-    background-color: $desert-color;
     cursor: pointer;
     text-align: center;
     height: 60px;
