@@ -1,8 +1,8 @@
-$sky-color: rgba(104, 178, 192, 1);
-$sky-color2: rgba(105, 193, 179, 1);
+$sky-color: #36747E;
+$sky-color2: #36747E;
 $cloud-color: rgba(236, 226, 177, 1);
 $border-color: rgba(119, 61, 6, 1);
-$bluee: #0091ff;
+$bluee: #36747E;
 $background-hover: #005ea8;
 $desert-color: rgba(239, 198, 128, 1);
 $shadow-nav: rgba(0, 0, 255, .2);
@@ -18,14 +18,13 @@ $mobile-menu: rgba(125, 159, 175, 0.35);
 .burgerMenu {
     position: relative;
     top: 20px;
-    right: -10px;
     cursor: pointer;
   }
   
     .burgerStickTop{
       position: relative;
       top: 0px;
-      height: 3px;
+      height: 25px;
       width: 32px;
       border-radius: 100px;
       background-color: $border-color;
@@ -34,7 +33,7 @@ $mobile-menu: rgba(125, 159, 175, 0.35);
     .burgerStickTopRotated{
       position: relative;
       top: 5px;
-      height: 3px;
+      height: 25px;
       width: 32px;
       border-radius: 100px;
       background-color: $border-color;
@@ -44,7 +43,8 @@ $mobile-menu: rgba(125, 159, 175, 0.35);
     .burgerStickMiddle{
       position: relative;
       top: 2px;
-      height: 3px;
+      height: 25px;
+
       width: 32px;
       border-radius: 100px;
       background-color: $border-color;
@@ -63,7 +63,7 @@ $mobile-menu: rgba(125, 159, 175, 0.35);
     .burgerStickBottom{
       position: relative;
       top: 4px;
-      height: 3px;
+      height: 25px;
       width: 32px;
       border-radius: 100px;
       background-color: $border-color;

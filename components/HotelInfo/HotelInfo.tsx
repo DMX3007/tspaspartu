@@ -64,7 +64,6 @@ export const HotelInfo = ({ entries }: IHotelInfo) => {
             return fetchHotelData(uniqueHotelsIds);
         }, enabled: !!(entries && entries.length),
     })
-    console.log(hotelData);
 
     if (isLoading) {
         return <div>is LOading...</div>
@@ -120,10 +119,10 @@ export const HotelInfo = ({ entries }: IHotelInfo) => {
         fontSize: '18px',
         fontWeight: 'bold',
     };
-    console.log(arrayOfUniqHotels)
+
     return (
         <div>
-            {arrayOfUniqHotels.length ? (
+            {arrayOfUniqHotels && arrayOfUniqHotels.length ? (
                 arrayOfUniqHotels.map((el) => {
                     return (
                         <Swiper
@@ -155,17 +154,17 @@ export const HotelInfo = ({ entries }: IHotelInfo) => {
                                                     loader={({ src, width }) => { return src + "?w=" + width }}
                                                     src={src}
                                                     width={200}
-                                                    height={200}
+                                                    height={150}
                                                     alt="изображение отеля"
                                                 />
                                             ) : (
-                                                <Image src="/" width={200} height={200} alt="" />
+                                                <Image src="/" width={200} height={150} alt="" />
                                             )}
 
                                             <h2 style={titleStyle}>{subEl.id_hotel}</h2>
                                             <p style={descriptionStyle}>{subEl.tour_date}</p>
                                             <p style={descriptionStyle}>{subEl.duration}</p>
-                                            <button style={buttonStyle} >
+                                            <button style={buttonStyle} onClick={null}>
                                                 {subEl.prices.map(el => el.amount)}
                                             </button>
 

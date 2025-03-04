@@ -46,7 +46,7 @@ function getMainCookieString(parsedCookies) {
   return mainCookieString + ";";
 }
 
-function cookieObjectToString(cookieObject:Cookie) {
+function cookieObjectToString(cookieObject: Cookie) {
   let cookieStr = `${cookieObject.key}=${cookieObject.value};`;
 
   if (cookieObject.expires) {
@@ -73,14 +73,14 @@ function cookieObjectToString(cookieObject:Cookie) {
   }
 
   // Remove the last semicolon if it exists
-  if (cookieStr.endsWith(';')) {
+  if (cookieStr.endsWith(";")) {
     cookieStr = cookieStr.slice(0, -1);
   }
 
   return cookieStr;
 }
 
-function xmlToJson(xml:string) {
+function xmlToJson(xml: string) {
   return new Promise((resolve, reject) => {
     parseString(xml, (err, result) => {
       if (err) {
@@ -96,7 +96,7 @@ const base = "http://export.bgoperator.ru";
 const myHeaders = new Headers();
 myHeaders.append("Accept-Encoding", "gzip");
 
-const requestOptions:RequestInit = {
+const requestOptions: RequestInit = {
   method: "POST",
   headers: myHeaders,
   redirect: "manual",
@@ -116,13 +116,13 @@ async function getFreshCookie() {
 
 const refreshedHeaders = new Headers();
 
-async function getData(endPoint:string) {
-  const rawRefreshedCookies = await getFreshCookie() as string;
+async function getData(endPoint: string) {
+  const rawRefreshedCookies = (await getFreshCookie()) as string;
   const objCookies = parseCookies(rawRefreshedCookies);
   const preparedCookies = getMainCookieString(objCookies);
-  refreshedHeaders.append('Cookie', preparedCookies)
+  refreshedHeaders.append("Cookie", preparedCookies);
 
-  const requestOptions:RequestInit = {
+  const requestOptions: RequestInit = {
     method: "GET",
     headers: refreshedHeaders,
     redirect: "follow",
@@ -131,20 +131,22 @@ async function getData(endPoint:string) {
   const data = await fetch(base + endPoint, requestOptions)
     .then(async (response) => {
       if (response.status === 401) {
-         const newCookie = await getFreshCookie();
-       const newHeaders = new Headers();
-       newHeaders.append("Cookie", newCookie);
-       const data = await fetch(base + endPoint, {
-        method: 'GET',
-        headers: newHeaders,
-       })
+        const newCookie = await getFreshCookie();
+        const newHeaders = new Headers();
+        newHeaders.append("Cookie", newCookie);
+        const data = await fetch(base + endPoint, {
+          method: "GET",
+          headers: newHeaders,
+        });
       }
       if (response.headers.get("content-type")!.includes("text/xml")) {
         return response.text().then((xmlText) => xmlToJson(xmlText));
-      } else if (response.headers.get('content-type')!.includes('javascript')) {
-        const jsToText = await response.text()
-        if (typeof jsToText === 'string') return jsToText;
-        throw new Error('Custom Error: getDate - const jsToText != string type')
+      } else if (response.headers.get("content-type")!.includes("javascript")) {
+        const jsToText = await response.text();
+        if (typeof jsToText === "string") return jsToText;
+        throw new Error(
+          "Custom Error: getDate - const jsToText != string type"
+        );
       } else {
         return response.json();
       }
@@ -153,4 +155,4 @@ async function getData(endPoint:string) {
   return data;
 }
 
-export default getData
+export default getData;

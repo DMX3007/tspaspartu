@@ -140,3 +140,16 @@ $mobile-menu: rgba(125, 159, 175, 0.35);
     font-size: x-small;
 }
 
+@media screen and  (min-width: "480px") {
+        .searchBar {
+            width: 100%;
+            height: 100%;
+            justify-content: space-around;
+        }
+        .searchItem {
+            gap: 16px;
+        }
+        .searchItemContainer{
+            display: flex;
+        }
+}
